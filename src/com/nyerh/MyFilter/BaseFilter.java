@@ -1,13 +1,14 @@
-@javax.servlet.annotation.WebFilter(filterName = "BaseFilter")
-public class BaseFilter implements javax.servlet.Filter {
+package com.nyerh.MyFilter;
+
+import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
+import java.io.IOException;
+
+public abstract class BaseFilter implements Filter {
     public void destroy() {
     }
 
-    public void doFilter(javax.servlet.ServletRequest req, javax.servlet.ServletResponse resp, javax.servlet.FilterChain chain) throws javax.servlet.ServletException, java.io.IOException {
-        chain.doFilter(req, resp);
-    }
-
-    public void init(javax.servlet.FilterConfig config) throws javax.servlet.ServletException {
+    public void init(FilterConfig config) throws ServletException {
 
     }
 

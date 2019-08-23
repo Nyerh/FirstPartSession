@@ -1,13 +1,35 @@
-@javax.servlet.annotation.WebFilter(filterName = "LoginFilter")
-public class LoginFilter implements javax.servlet.Filter {
-    public void destroy() {
-    }
+package com.nyerh.MyFilter;
 
-    public void doFilter(javax.servlet.ServletRequest req, javax.servlet.ServletResponse resp, javax.servlet.FilterChain chain) throws javax.servlet.ServletException, java.io.IOException {
-        chain.doFilter(req, resp);
-    }
+import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
-    public void init(javax.servlet.FilterConfig config) throws javax.servlet.ServletException {
+public class LoginFilter extends BaseFilter {
+
+    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
+
+        HttpServletRequest request=(HttpServletRequest)req;
+        HttpServletResponse response=(HttpServletResponse)resp;
+
+        String uri = request.getRequestURI();//检测uri请求
+        String action = request.getParameter("action");//检测action
+
+        Integer checkFilt = (Integer) request.getSession().getAttribute("checkFilt");//检测登录状态和免登录的变量
+
+        System.out.println(uri);
+        System.out.println(action);
+
+        if(checkFilt!=null||uri.endsWith("login.jsp")||uri.endsWith("register.jsp")||uri.endsWith("CheckServlet")||"login".equals(action)||"register".equals(action)||"switchUser".equals(action))
+        {
+            chain.doFilter(req, resp);
+        }
+        else
+        {
+            request.setAttribute("msg","没登录无权限进入");
+            request.getRequestDispatcher("login.jsp").forward(request,response);
+        }
 
     }
 

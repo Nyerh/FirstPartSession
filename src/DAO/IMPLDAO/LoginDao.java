@@ -182,4 +182,114 @@ public class LoginDao implements ILoginDAO {
         }
         return i;
     }
+
+    @Override
+    public List<Goods> ShowAsName(String findname) {
+        Connection con=null;
+        PreparedStatement pre=null;
+        ResultSet res=null;
+        List<Goods> list=new ArrayList<>();
+        try {
+            con=DBUtils.getConnection();
+            pre=con.prepareStatement("select * from goods where g_goods_name like ? and is_delete=1");
+            pre.setString(1,findname);
+            res=pre.executeQuery();
+            while (res.next())
+            {
+                int id = res.getInt(1);
+                String name = res.getString(2);
+                String pic = res.getString(3);
+                String price = res.getString(4);
+                String desciption = res.getString(5);
+                String stock = res.getString(6);
+                int is_delete = res.getInt("is_delete");
+                list.add(new Goods(id,name,pic,price,desciption,stock,is_delete));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            DBClose.closeall(res,pre,con);
+        }
+
+        return list;
+    }
+
+    @Override
+    public List<Goods> ShowAsPrice(String min, String max) {
+        Connection con=null;
+        PreparedStatement pre=null;
+        ResultSet res=null;
+        List<Goods> list=new ArrayList<>();
+        double minS = Double.parseDouble(min);
+        double maxS = Double.parseDouble(max);
+        if(minS>maxS)
+        {
+            double x=minS;
+            minS=maxS;
+            maxS=x;
+        }
+        try {
+            con=DBUtils.getConnection();
+            pre=con.prepareStatement("select * from goods where is_delete=1;");
+            res = pre.executeQuery();
+            while (res.next())
+            {
+                int id = res.getInt(1);
+                String name = res.getString(2);
+                String pic = res.getString(3);
+                String price = res.getString(4);
+                String desciption = res.getString(5);
+                String stock = res.getString(6);
+                int is_delete = res.getInt("is_delete");
+                double i = Double.parseDouble(price);
+                if(i<=maxS&&i>=minS)
+                list.add(new Goods(id,name,pic,price,desciption,stock,is_delete));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            DBClose.closeall(res,pre,con);
+        }
+        return list;
+    }
+
+    @Override
+    public List<Goods> ShowAsStock(String min, String max) {
+        Connection con=null;
+        PreparedStatement pre=null;
+        ResultSet res=null;
+        List<Goods> list=new ArrayList<>();
+        double minS = Double.parseDouble(min);
+        double maxS = Double.parseDouble(max);
+        if(minS>maxS)
+        {
+            double x=minS;
+            minS=maxS;
+            maxS=x;
+        }
+        try {
+            con=DBUtils.getConnection();
+            pre=con.prepareStatement("select * from goods where is_delete=1;");
+            res = pre.executeQuery();
+            while (res.next())
+            {
+                int id = res.getInt(1);
+                String name = res.getString(2);
+                String pic = res.getString(3);
+                String price = res.getString(4);
+                String desciption = res.getString(5);
+                String stock = res.getString(6);
+                int is_delete = res.getInt("is_delete");
+                double i = Double.parseDouble(stock);
+                if(i<=maxS&&i>=minS)
+                    list.add(new Goods(id,name,pic,price,desciption,stock,is_delete));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            DBClose.closeall(res,pre,con);
+        }
+        return list;
+
+    }
 }

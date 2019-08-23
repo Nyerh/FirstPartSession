@@ -8,9 +8,16 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>$Title$</title>
+    <title>Title</title>
 </head>
 <body>
-$END$
+<form action="AddGoodsServlet" method="post" enctype="multipart/form-data">
+    商品名:<input type="text" name="name"/><br>
+    图片:<input type="file" name="pic"><br>
+    价格：<input type="text" name="price"><br>
+    简介：<input type="text" name="description"><br>
+    库存：<input type="text" name="stock"><br>
+    <input type="submit" value="添加">
+</form>
 </body>
 </html>
